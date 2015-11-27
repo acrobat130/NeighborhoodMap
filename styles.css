@@ -1,0 +1,8 @@
+/* formatting to make map show up*/
+html, body {
+	height: 100%;
+}
+
+#map {
+	height: 100%;
+}

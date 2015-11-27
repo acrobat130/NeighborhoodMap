@@ -3,19 +3,21 @@
   <head>
     <meta charset="utf-8"/>
     <title>Neighborhood Map</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
   </head>
   <body>
   	<!-- search bar -->
   	<div>search bar</div>
 
   	<!-- map view -->
-  	<div>map view</div>
+  	<div id='map'></div>
 
   	<!-- list view -->
   	<div>list view</div>
 
   	<script src="bower_components/knockout/dist/knockout.js"></script>
   	<script src="app.js"></script>
+  	<script src="https://maps.googleapis.com/maps/api/js?callback=initMap" async defer></script>
   </body>
 
 </html>
