@@ -64,11 +64,22 @@ var mapView = function() {
 		var currentItem = initialData[key];
 		// add initial locations to array
 		this.mapLocations.push(currentItem);
+		// create marker
 		var marker = new google.maps.Marker({
 			position: {lat: currentItem.lat, lng: currentItem.lng},
 			map: map,
 			title: currentItem.title
-		})
+		});
+		// create infowindow
+		var infowindow = new google.maps.InfoWindow({
+			content: 'hello'
+		});
+		// add event listener on click
+		marker.addListener('click', (function(map, marker){
+			return function(){
+				infowindow.open(map, marker);
+			};
+		})(map, marker));
 	};
 
 };
