@@ -68,16 +68,28 @@ var mapView = function() {
 		var marker = new google.maps.Marker({
 			position: {lat: currentItem.lat, lng: currentItem.lng},
 			map: map,
+			animation: google.maps.Animation.DROP,
 			title: currentItem.title
 		});
+		// // add marker event listener
+		// marker.addListener('click', (function(map, marker){
+		// 	return function(){
+		// 		marker.setAnimation(google.maps.Animation.DROP);
+
+		// 	}
+		// });
 		// create infowindow
 		var infowindow = new google.maps.InfoWindow({
 			content: 'hello'
 		});
-		// add event listener on click
+		// add event listener on click for infowindow and animation
 		marker.addListener('click', (function(map, marker){
 			return function(){
 				infowindow.open(map, marker);
+				marker.setAnimation(google.maps.Animation.BOUNCE);
+				setTimeout(function(){
+					marker.setAnimation(null);
+				}, 1400);
 			};
 		})(map, marker));
 	};
