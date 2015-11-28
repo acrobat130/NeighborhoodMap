@@ -11,3 +11,8 @@ html, body {
 h4 {
 	display: inline-block;
 }
+
+/* list view formatting */
+li {
+	list-style-type: none;
+}
