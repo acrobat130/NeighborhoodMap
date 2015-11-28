@@ -6,3 +6,8 @@ html, body {
 #map {
 	height: 100%;
 }
+
+/* search bar formatting */
+h4 {
+	display: inline-block;
+}

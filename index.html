@@ -7,13 +7,21 @@
   </head>
   <body>
   	<!-- search bar -->
-  	<input placeholder = "search"></input>
+  	<div>
+      <h4>Find a Location: </h4>
+      <input placeholder = "Search"></input>
+    </div>
 
   	<!-- map view -->
   	<div id='map'></div>
 
   	<!-- list view -->
-  	<div data-bind="">list view</div>
+  	<div>
+      <h3>list view</h3>
+      <ul data-bind="foreach: mapLocations">
+        <li data-bind="text: title"></li>
+      </ul>
+    </div>
 
   	<script src="bower_components/knockout/dist/knockout.js"></script>
   	<script src="app.js"></script>
