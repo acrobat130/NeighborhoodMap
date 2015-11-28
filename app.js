@@ -16,14 +16,12 @@ var initMap = function() {
 		zoom: 15
 	});
 
-
-	// mapModel();
-	ko.applyBindings(new mapModel());
-
+	// mapView();
+	ko.applyBindings(new mapView());
 };
 
 // models
-var mapModel = function() {
+var mapView = function() {
 	// create empty array to store location objects
 	this.mapLocations = ko.observableArray();
 
@@ -75,14 +73,6 @@ var mapModel = function() {
 
 };
 
-// controller
-var viewModel = function() {
-
-};
-document.addEventListener('DOMContentLoaded', function(){
-	// ko.applyBindings(new mapModel());
-
-});
 
 
 
