@@ -115,6 +115,7 @@ var mapView = function() {
 		allLocations.push(currentItem);
 	};
 
+	// filter functionality from searchbar
 	var self = this;
 	this.search = ko.observable('');
 	self.search.subscribe(function (value) {
@@ -133,6 +134,28 @@ var mapView = function() {
 			}
 		}
 	});
+	// TODO: refactor this and infowindow click listener into one function. currently duplicated code
+	this.triggerInfowindow = function(currentLoc) {
+		console.log(currentLoc)
+		console.log('clicked');
+		// close all open infowindows
+			for (var i = 0; i < self.infowindowArray.length; i++) {
+				self.infowindowArray[i].close();
+			}
+		// add bounce animation to marker when clicked
+		currentLoc.marker.setAnimation(google.maps.Animation.BOUNCE);
+		// create new infowindow
+		currentLoc.infowindow = new google.maps.InfoWindow({
+			content: currentLoc.title
+		})
+		// push infowindow to infowindowArray
+		self.infowindowArray.push(currentLoc.infowindow);
+		// infoWindow.setContent(currentItem.title);
+		currentLoc.infowindow.open(map, currentLoc.marker);
+		setTimeout(function(){
+			currentItem.marker.setAnimation(null);
+		}, 1400);
+	}
 	// add query as ko observable
 	// this.query = ko.observable('');
 	// console.log("1",this.query())

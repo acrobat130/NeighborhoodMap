@@ -19,7 +19,7 @@
   	<div>
       <h3>list view</h3>
       <ul data-bind="foreach: mapLocations">
-        <li data-bind="text: title"></li>
+        <li data-bind="text: title, click: $parent.triggerInfowindow"></li>
       </ul>
     </div>
 
