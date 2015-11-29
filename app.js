@@ -2,6 +2,7 @@
 // called from script tag in html
 var map;
 var service;
+var detailsService;
 // model array
 // TODO: move to model function
 var allLocations = [];
@@ -96,13 +97,29 @@ var mapView = function() {
 
 		// create marker
 		function createMarker(item) {
+			// make details request
+			var request = {
+				placeId: item.place_id
+			};
+
+			detailsService = new google.maps.places.PlacesService(map);
+			detailsService.getDetails(request, detailsCallback);
+
+			function detailsCallback(place, status) {
+				if (status == google.maps.places.PlacesServiceStatus.OK) {
+					// update marker infowindow
+					console.log('place',place)
+					addClickListener(item, place);
+				}
+			}
+
+			// default marker
 			item.marker = new google.maps.Marker({
 				position: item.geometry.location,
 				map: map,
 				animation: google.maps.Animation.DROP,
 				title: item.name
 			});
-			addClickListener(item);
 		};
 
 		// // add marker event listener
@@ -118,7 +135,7 @@ var mapView = function() {
 		// });
 		// add event listener on click for infowindow and animation
 		// console.log(currentItem)
-		function addClickListener(item) {
+		function addClickListener(item, place) {
 			// console.log(item)
 			 item.marker.addListener('click', (function(map, item){
 				return function(){
@@ -129,8 +146,9 @@ var mapView = function() {
 					// add bounce animation to marker when clicked
 					item.marker.setAnimation(google.maps.Animation.BOUNCE);
 					// create new infowindow
+					var contentString = '<strong>' + item.name + '</strong>' + '<br/><hr/> <strong>Address: </strong>' + place.formatted_address + '<br/> <strong>Phone: </strong>' + place.formatted_phone_number + '<br/> <strong>Website: </strong>' + place.website;
 					item.infowindow = new google.maps.InfoWindow({
-						content: item.name
+						content: contentString
 					})
 					// push infowindow to infowindowArray
 					self.infowindowArray.push(item.infowindow);
@@ -143,7 +161,6 @@ var mapView = function() {
 			})(map, item));
 
 			// add initial locations to ko observable array & model array
-			console.log("item", item)
 			self.mapLocations.push(item);
 			allLocations.push(item);
 		};
@@ -171,8 +188,6 @@ var mapView = function() {
 	});
 	// TODO: refactor this and infowindow click listener into one function. currently duplicated code
 	this.triggerInfowindow = function(currentLoc) {
-		console.log(currentLoc)
-		console.log('clicked');
 		// close all open infowindows
 			for (var i = 0; i < self.infowindowArray.length; i++) {
 				self.infowindowArray[i].close();
