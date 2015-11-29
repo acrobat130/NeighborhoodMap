@@ -108,6 +108,8 @@ var mapView = function() {
 		self.mapLocations.removeAll();
 		// add locations back to view array based on search input
 		for (var i = 0; i < allLocations.length; i++) {
+			// hide all markers on map initially
+			allLocations[i].marker.setVisible(false);
 			if (allLocations[i].title.toLowerCase().indexOf(value.toLowerCase()) >= 0) {
 				self.mapLocations.push(allLocations[i]);
 				// make marker visible
