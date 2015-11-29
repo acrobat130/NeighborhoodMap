@@ -153,7 +153,7 @@ var mapView = function() {
 		// infoWindow.setContent(currentItem.title);
 		currentLoc.infowindow.open(map, currentLoc.marker);
 		setTimeout(function(){
-			currentItem.marker.setAnimation(null);
+			currentLoc.marker.setAnimation(null);
 		}, 1400);
 	}
 	// add query as ko observable
