@@ -63,6 +63,8 @@ var mapView = function() {
 			title: 'Silicon Valley Ballet'
 		}
 	};
+	// add variable to hold array of infowindows so I can close them all before opening a new one
+	this.infowindowArray = [];
 
 	// add 5 custom hard-coded location markers on initialization
 	for (var key in initialData) {
@@ -74,30 +76,43 @@ var mapView = function() {
 			animation: google.maps.Animation.DROP,
 			title: currentItem.title
 		});
-		// add initial locations to ko observable array & model array
-		this.mapLocations.push(currentItem);
-		allLocations.push(currentItem);
 		// // add marker event listener
 		// marker.addListener('click', (function(map, marker){
 		// 	return function(){
 		// 		marker.setAnimation(google.maps.Animation.DROP);
-
 		// 	}
 		// });
 		// create infowindow
-		var infowindow = new google.maps.InfoWindow({
-			content: 'hello'
-		});
+		// console.log(currentItem)
+		// currentItem.infowindow = new google.maps.InfoWindow({
+		// 	content: currentItem.title
+		// });
 		// add event listener on click for infowindow and animation
-		currentItem.marker.addListener('click', (function(map, marker){
+		currentItem.marker.addListener('click', (function(map, currentItem){
 			return function(){
-				infowindow.open(map, marker);
-				marker.setAnimation(google.maps.Animation.BOUNCE);
+				// close all open infowindows
+				for (var i = 0; i < self.infowindowArray.length; i++) {
+					self.infowindowArray[i].close();
+				}
+				// add bounce animation to marker when clicked
+				currentItem.marker.setAnimation(google.maps.Animation.BOUNCE);
+				// create new infowindow
+				currentItem.infowindow = new google.maps.InfoWindow({
+					content: currentItem.title
+				})
+				// push infowindow to infowindowArray
+				self.infowindowArray.push(currentItem.infowindow);
+				// infoWindow.setContent(currentItem.title);
+				currentItem.infowindow.open(map, currentItem.marker);
 				setTimeout(function(){
-					marker.setAnimation(null);
+					currentItem.marker.setAnimation(null);
 				}, 1400);
 			};
-		})(map, currentItem.marker));
+		})(map, currentItem));
+		console.log(currentItem)
+		// add initial locations to ko observable array & model array
+		this.mapLocations.push(currentItem);
+		allLocations.push(currentItem);
 	};
 
 	var self = this;
