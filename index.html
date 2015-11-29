@@ -19,14 +19,15 @@
   	<div>
       <h3>list view</h3>
       <ul data-bind="foreach: mapLocations">
-        <li data-bind="text: title, click: $parent.triggerInfowindow"></li>
+        <li data-bind="text: name, click: $parent.triggerInfowindow"></li>
       </ul>
     </div>
 
     <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="bower_components/knockout/dist/knockout.js"></script>
   	<script src="app.js"></script>
-  	<script async defer src="https://maps.googleapis.com/maps/api/js?callback=initMap"></script>
+  	<script async defer src="https://maps.googleapis.com/maps/api/js?libraries=places&callback=initMap"></script>
+    <!--<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAqXrRRhECX9sGKblPyd6qKgbZG9aL4IZo&libraries=places"></script>-->
   </body>
 
 </html>

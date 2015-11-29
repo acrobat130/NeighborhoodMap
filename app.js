@@ -1,6 +1,7 @@
 // google map initialization, bound to window object
 // called from script tag in html
 var map;
+var service;
 // model array
 // TODO: move to model function
 var allLocations = [];
@@ -9,8 +10,8 @@ var initMap = function() {
 	// create empty array to store location objects
 	// this.mapLocations = ko.observableArray();
 
-	// center of map
-	var centerLatLng = {lat: 37.336, lng: -121.893};
+	// center of map, create LatLng object for google places
+	var centerLatLng = new google.maps.LatLng(37.336, -121.893);
 
 	// create map
 	map = new google.maps.Map(document.getElementById('map'), {
@@ -69,13 +70,41 @@ var mapView = function() {
 	// add 5 custom hard-coded location markers on initialization
 	for (var key in initialData) {
 		var currentItem = initialData[key];
+		// LatLng object for each location:
+		var currentItemLatLng = new google.maps.LatLng(currentItem.lat, currentItem.lng);
+
+		// google places request
+		var request = {
+			location: currentItemLatLng,
+			radius: '500',
+			keyword: currentItem.title
+		};
+		// make google places request
+		service = new google.maps.places.PlacesService(map);
+		service.nearbySearch(request, placesCallback);
+
+		// callback for places request
+		function placesCallback(results, status) {
+			if (status == google.maps.places.PlacesServiceStatus.OK) {
+				for (var i = 0; i < results.length; i++) {
+					var place = results[i];
+					createMarker(results[i]);
+				}
+			}
+		};
+
+
 		// create marker
-		currentItem.marker = new google.maps.Marker({
-			position: {lat: currentItem.lat, lng: currentItem.lng},
-			map: map,
-			animation: google.maps.Animation.DROP,
-			title: currentItem.title
-		});
+		function createMarker(item) {
+			item.marker = new google.maps.Marker({
+				position: item.geometry.location,
+				map: map,
+				animation: google.maps.Animation.DROP,
+				title: item.name
+			});
+			addClickListener(item);
+		};
+
 		// // add marker event listener
 		// marker.addListener('click', (function(map, marker){
 		// 	return function(){
@@ -88,31 +117,37 @@ var mapView = function() {
 		// 	content: currentItem.title
 		// });
 		// add event listener on click for infowindow and animation
-		currentItem.marker.addListener('click', (function(map, currentItem){
-			return function(){
-				// close all open infowindows
-				for (var i = 0; i < self.infowindowArray.length; i++) {
-					self.infowindowArray[i].close();
-				}
-				// add bounce animation to marker when clicked
-				currentItem.marker.setAnimation(google.maps.Animation.BOUNCE);
-				// create new infowindow
-				currentItem.infowindow = new google.maps.InfoWindow({
-					content: currentItem.title
-				})
-				// push infowindow to infowindowArray
-				self.infowindowArray.push(currentItem.infowindow);
-				// infoWindow.setContent(currentItem.title);
-				currentItem.infowindow.open(map, currentItem.marker);
-				setTimeout(function(){
-					currentItem.marker.setAnimation(null);
-				}, 1400);
-			};
-		})(map, currentItem));
-		console.log(currentItem)
-		// add initial locations to ko observable array & model array
-		this.mapLocations.push(currentItem);
-		allLocations.push(currentItem);
+		// console.log(currentItem)
+		function addClickListener(item) {
+			// console.log(item)
+			 item.marker.addListener('click', (function(map, item){
+				return function(){
+					// close all open infowindows
+					for (var i = 0; i < self.infowindowArray.length; i++) {
+						self.infowindowArray[i].close();
+					}
+					// add bounce animation to marker when clicked
+					item.marker.setAnimation(google.maps.Animation.BOUNCE);
+					// create new infowindow
+					item.infowindow = new google.maps.InfoWindow({
+						content: item.name
+					})
+					// push infowindow to infowindowArray
+					self.infowindowArray.push(item.infowindow);
+					// infoWindow.setContent(item.title);
+					item.infowindow.open(map, item.marker);
+					setTimeout(function(){
+						item.marker.setAnimation(null);
+					}, 1400);
+				};
+			})(map, item));
+
+			// add initial locations to ko observable array & model array
+			console.log("item", item)
+			self.mapLocations.push(item);
+			allLocations.push(item);
+		};
+		// console.log(currentItem)
 	};
 
 	// filter functionality from searchbar
@@ -126,7 +161,7 @@ var mapView = function() {
 		for (var i = 0; i < allLocations.length; i++) {
 			// hide all markers on map initially
 			allLocations[i].marker.setVisible(false);
-			if (allLocations[i].title.toLowerCase().indexOf(value.toLowerCase()) >= 0) {
+			if (allLocations[i].name.toLowerCase().indexOf(value.toLowerCase()) >= 0) {
 				self.mapLocations.push(allLocations[i]);
 				// make marker visible
 				console.log(allLocations[i].marker)
@@ -146,7 +181,7 @@ var mapView = function() {
 		currentLoc.marker.setAnimation(google.maps.Animation.BOUNCE);
 		// create new infowindow
 		currentLoc.infowindow = new google.maps.InfoWindow({
-			content: currentLoc.title
+			content: currentLoc.name
 		})
 		// push infowindow to infowindowArray
 		self.infowindowArray.push(currentLoc.infowindow);
