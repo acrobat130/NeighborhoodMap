@@ -1,6 +1,9 @@
 // google map initialization, bound to window object
 // called from script tag in html
 var map;
+// model array
+// TODO: move to model function
+var allLocations = [];
 var initMap = function() {
 	// create a map object and specify the DOM element for display
 	// create empty array to store location objects
@@ -18,12 +21,14 @@ var initMap = function() {
 
 	// mapView();
 	ko.applyBindings(new mapView());
+	// connect search function to html
+	// mapView.query.subscribe(mapView.search);
 };
 
 // models
 var mapView = function() {
 	// create empty array to store location objects
-	this.mapLocations = ko.observableArray();
+	this.mapLocations = ko.observableArray([]);
 
 		// lat, lng, marker name, title for each hard-coded location
 	var initialData = {
@@ -62,15 +67,16 @@ var mapView = function() {
 	// add 5 custom hard-coded location markers on initialization
 	for (var key in initialData) {
 		var currentItem = initialData[key];
-		// add initial locations to array
-		this.mapLocations.push(currentItem);
 		// create marker
-		var marker = new google.maps.Marker({
+		currentItem.marker = new google.maps.Marker({
 			position: {lat: currentItem.lat, lng: currentItem.lng},
 			map: map,
 			animation: google.maps.Animation.DROP,
 			title: currentItem.title
 		});
+		// add initial locations to ko observable array & model array
+		this.mapLocations.push(currentItem);
+		allLocations.push(currentItem);
 		// // add marker event listener
 		// marker.addListener('click', (function(map, marker){
 		// 	return function(){
@@ -83,7 +89,7 @@ var mapView = function() {
 			content: 'hello'
 		});
 		// add event listener on click for infowindow and animation
-		marker.addListener('click', (function(map, marker){
+		currentItem.marker.addListener('click', (function(map, marker){
 			return function(){
 				infowindow.open(map, marker);
 				marker.setAnimation(google.maps.Animation.BOUNCE);
@@ -91,11 +97,51 @@ var mapView = function() {
 					marker.setAnimation(null);
 				}, 1400);
 			};
-		})(map, marker));
+		})(map, currentItem.marker));
 	};
 
-};
+	var self = this;
+	this.search = ko.observable('');
+	self.search.subscribe(function (value) {
+		var search = value.toLowerCase();
+		// remove locations from view but not from overall array
+		self.mapLocations.removeAll();
+		// add locations back to view array based on search input
+		for (var i = 0; i < allLocations.length; i++) {
+			if (allLocations[i].title.toLowerCase().indexOf(value.toLowerCase()) >= 0) {
+				self.mapLocations.push(allLocations[i]);
+				// make marker visible
+				console.log(allLocations[i].marker)
+				allLocations[i].marker.setVisible(true);
+			}
+		}
+	});
+	// add query as ko observable
+	// this.query = ko.observable('');
+	// console.log("1",this.query())
 
+	// this.searchResults = ko.computed(function() {
+	// 	console.log("2", this.query())
+	// 	var search = this.query().toLowerCase();
+	// 	return ko.utils.arrayFilter(allLocations, function(location) {
+	// 		return location.title.toLowerCase().indexOf(search) >= 0;
+	// 	});
+	// }, mapView);
+
+	// non-working search alternative
+	// this.search = function(value) {
+	// 	// remove locations from view but not from overall array
+	// 	mapView.mapLocations.removeAll();
+	// 	// add locations back to view array based on search input
+	// 	for (var i = 0; i < allLocations.length; i++) {
+	// 		if (allLocations[i].title.toLowerCase().indexOf(value.toLowerCase()) >= 0) {
+	// 			mapView.mapLocations.push(allLocations[i]);
+	// 			// make marker visible
+	// 			marker[i].setVisible(true);
+	// 		}
+	// 	}
+	// }
+};
 
 
 
