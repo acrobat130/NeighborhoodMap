@@ -108,8 +108,11 @@ var mapView = function() {
 			function detailsCallback(place, status) {
 				if (status == google.maps.places.PlacesServiceStatus.OK) {
 					// update marker infowindow
-					console.log('place',place)
 					addClickListener(item, place);
+					// add address, phone number, website properties to item
+					item.formatted_address = place.formatted_address;
+					item.formatted_phone_number = place.formatted_phone_number;
+					item.website = place.website;
 				}
 			}
 
@@ -181,7 +184,6 @@ var mapView = function() {
 			if (allLocations[i].name.toLowerCase().indexOf(value.toLowerCase()) >= 0) {
 				self.mapLocations.push(allLocations[i]);
 				// make marker visible
-				console.log(allLocations[i].marker)
 				allLocations[i].marker.setVisible(true);
 			}
 		}
@@ -195,8 +197,10 @@ var mapView = function() {
 		// add bounce animation to marker when clicked
 		currentLoc.marker.setAnimation(google.maps.Animation.BOUNCE);
 		// create new infowindow
+		var contentString = '<strong>' + currentLoc.name + '</strong>' + '<br/><hr/> <strong>Address: </strong>' + currentLoc.formatted_address + '<br/> <strong>Phone: </strong>' + currentLoc.formatted_phone_number + '<br/> <strong>Website: </strong>' + currentLoc.website;
+
 		currentLoc.infowindow = new google.maps.InfoWindow({
-			content: currentLoc.name
+			content: contentString
 		})
 		// push infowindow to infowindowArray
 		self.infowindowArray.push(currentLoc.infowindow);
