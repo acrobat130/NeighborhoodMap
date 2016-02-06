@@ -16,3 +16,12 @@ h4 {
 li {
 	list-style-type: none;
 }
+
+.cursor:hover {
+	cursor: pointer;
+}
+
+.listView h4 {
+	margin-top: 0;
+	margin-bottom: 0;
+}

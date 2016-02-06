@@ -6,20 +6,24 @@
     <link rel="stylesheet" type="text/css" href="styles.css">
   </head>
   <body>
+    <div>
+      <center><h1>Shanna's Favorite Places in San Jose</h1></center>
+    </div>
+
+    <!-- map view -->
+    <div id='map'></div>
+
   	<!-- search bar -->
   	<div>
       <h4>Find a Location: </h4>
       <input id="search" placeholder = "Search" type="search" data-bind="textInput: search"></input>
     </div>
 
-  	<!-- map view -->
-  	<div id='map'></div>
-
   	<!-- list view -->
-  	<div>
-      <h3>list view</h3>
+  	<div class='listView'>
+      <h4>Search Results</h4>
       <ul data-bind="foreach: mapLocations">
-        <li data-bind="text: name, click: $parent.triggerInfowindow"></li>
+        <li class='cursor' data-bind="text: name, click: $parent.triggerInfowindow"></li>
       </ul>
     </div>
 
