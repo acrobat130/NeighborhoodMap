@@ -89,7 +89,7 @@ var mapView = function() {
 					createMarker(results[i]);
 				}
 			}
-		};
+		}
 
 		// create marker
 		function createMarker(item) {
@@ -162,7 +162,7 @@ var mapView = function() {
 			// add initial locations to ko observable array & model array
 			self.mapLocations.push(item);
 			allLocations.push(item);
-		};
+		}
 		// console.log(currentItem)
 	};
 
