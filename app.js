@@ -64,6 +64,11 @@ var mapView = function() {
 	// add variable to hold array of infowindows so I can close them all before opening a new one
 	this.infowindowArray = [];
 
+	// info for foursquare request
+	var clientId = 'PJH1KVDYTTSVN3EUAV3LXPPR53LIEW0ZYGVKRE5OVTMO5YGT';
+	var clientSecret = 'RJU02QXFZRZCS1W53HG4SNFW4AYVMARPLKPBQ5DHF13XWUXW';
+	var apiEndpoint = 'https://api.foursquare.com/v2/venues/search';
+
 	// add 5 custom hard-coded location markers on initialization
 	for (var i = 0; i < initialData.length; i++) {
 
@@ -89,6 +94,20 @@ var mapView = function() {
 					createMarker(results[i]);
 				}
 			}
+		}
+
+
+		// ajax request to foursquare
+		$.ajax({
+			url: apiEndpoint,
+			dataType: 'json',
+			data: 'll=' + initialData[i].lat + ',' + initialData[i].lng + '&client_id=' + clientId + '&client_secret=' + clientSecret + '',
+			// async: false,
+			success: fourSquareSuccessHandler
+		});
+
+		function fourSquareSuccessHandler(data) {
+			// do something with foursquare data
 		}
 
 		// create marker
