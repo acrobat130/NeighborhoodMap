@@ -70,29 +70,33 @@ var mapView = function() {
 
 	// add 5 custom hard-coded location markers on initialization
 	for (var key in initialData) {
-		var currentItem = initialData[key];
-		// LatLng object for each location:
-		var currentItemLatLng = new google.maps.LatLng(currentItem.lat, currentItem.lng);
+		// only iterate through initialData's own properties
+		if (initialData.hasOwnProperty(key)) {
 
-		// google places request
-		var request = {
-			location: currentItemLatLng,
-			radius: '500',
-			keyword: currentItem.title
-		};
-		// make google places request
-		service = new google.maps.places.PlacesService(map);
-		service.nearbySearch(request, placesCallback);
+			var currentItem = initialData[key];
+			// LatLng object for each location:
+			var currentItemLatLng = new google.maps.LatLng(currentItem.lat, currentItem.lng);
 
-		// callback for places request
-		function placesCallback(results, status) {
-			if (status == google.maps.places.PlacesServiceStatus.OK) {
-				for (var i = 0; i < results.length; i++) {
-					var place = results[i];
-					createMarker(results[i]);
+			// google places request
+			var request = {
+				location: currentItemLatLng,
+				radius: '500',
+				keyword: currentItem.title
+			};
+			// make google places request
+			service = new google.maps.places.PlacesService(map);
+			service.nearbySearch(request, placesCallback);
+
+			// callback for places request
+			function placesCallback(results, status) {
+				if (status == google.maps.places.PlacesServiceStatus.OK) {
+					for (var i = 0; i < results.length; i++) {
+						var place = results[i];
+						createMarker(results[i]);
+					}
 				}
-			}
-		};
+			};
+		}
 
 
 		// create marker
