@@ -33,71 +33,63 @@ var mapView = function() {
 	this.mapLocations = ko.observableArray([]);
 
 		// lat, lng, marker name, title for each hard-coded location
-	var initialData = {
-		studio: {
+	var initialData = [];
+	initialData.push({
 			lat: 37.3303299,
 			lng: -121.8858455,
 			marker: 'studioMarker',
 			title: 'The Studio'
-		},
-		wholeFoods: {
+		}, {
 			lat: 37.332092,
 			lng: -121.9044,
 			marker: 'wholeFoodsMarker',
 			title: 'Whole Foods'
-		},
-		guadalupe: {
+		}, {
 			lat: 37.3434303,
 			lng: -121.904,
 			marker: 'guadalupeMarker',
 			title: 'Guadalupe River Park'
-		},
-		train: {
+		}, {
 			lat: 37.330340,
 			lng: -121.902960,
 			marker: 'trainMarker',
 			title: 'Diridon Train Station'
-		},
-		ballet: {
+		}, {
 			lat: 37.3369063,
 			lng: -121.89304,
 			marker: 'balletMarker',
 			title: 'Silicon Valley Ballet'
-		}
-	};
+	});
+
 	// add variable to hold array of infowindows so I can close them all before opening a new one
 	this.infowindowArray = [];
 
 	// add 5 custom hard-coded location markers on initialization
-	for (var key in initialData) {
-		// only iterate through initialData's own properties
-		if (initialData.hasOwnProperty(key)) {
+	for (var i = 0; i < initialData.length; i++) {
 
-			var currentItem = initialData[key];
-			// LatLng object for each location:
-			var currentItemLatLng = new google.maps.LatLng(currentItem.lat, currentItem.lng);
+		var currentItem = initialData[i];
+		// LatLng object for each location:
+		var currentItemLatLng = new google.maps.LatLng(currentItem.lat, currentItem.lng);
 
-			// google places request
-			var request = {
-				location: currentItemLatLng,
-				radius: '500',
-				keyword: currentItem.title
-			};
-			// make google places request
-			service = new google.maps.places.PlacesService(map);
-			service.nearbySearch(request, placesCallback);
+		// google places request
+		var request = {
+			location: currentItemLatLng,
+			radius: '500',
+			keyword: currentItem.title
+		};
+		// make google places request
+		service = new google.maps.places.PlacesService(map);
+		service.nearbySearch(request, placesCallback);
 
-			// callback for places request
-			function placesCallback(results, status) {
-				if (status == google.maps.places.PlacesServiceStatus.OK) {
-					for (var i = 0; i < results.length; i++) {
-						var place = results[i];
-						createMarker(results[i]);
-					}
+		// callback for places request
+		function placesCallback(results, status) {
+			if (status == google.maps.places.PlacesServiceStatus.OK) {
+				for (var i = 0; i < results.length; i++) {
+					var place = results[i];
+					createMarker(results[i]);
 				}
-			};
-		}
-
+			}
+		};
 
 		// create marker
 		function createMarker(item) {
