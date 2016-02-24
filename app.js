@@ -119,7 +119,7 @@ var mapView = function() {
 				animation: google.maps.Animation.DROP,
 				title: item.name
 			});
-		};
+		}
 
 		// // add marker event listener
 		// marker.addListener('click', (function(map, marker){
