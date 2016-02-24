@@ -30,7 +30,7 @@
     <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="bower_components/knockout/dist/knockout.js"></script>
   	<script src="app.js"></script>
-  	<script async defer src="https://maps.googleapis.com/maps/api/js?libraries=places&callback=initMap"></script>
+  	<script async defer onerror="googleError()" src="https://maps.googleapis.com/maps/api/js?libraries=places&callback=initMap"></script>
     <!--<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAqXrRRhECX9sGKblPyd6qKgbZG9aL4IZo&libraries=places"></script>-->
   </body>
 
