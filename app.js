@@ -116,6 +116,7 @@ var mapView = function() {
 				}
 			}
 
+
 			// info for foursquare request
 			var clientId = 'PJH1KVDYTTSVN3EUAV3LXPPR53LIEW0ZYGVKRE5OVTMO5YGT',
 				clientSecret = 'RJU02QXFZRZCS1W53HG4SNFW4AYVMARPLKPBQ5DHF13XWUXW',
@@ -148,11 +149,6 @@ var mapView = function() {
 					console.log("data.response.venues['0'].stats.checkinsCount", data.response.venues['0'].stats.checkinsCount)
 				}
 			}
-
-
-
-
-
 
 
 			// default marker
@@ -188,7 +184,7 @@ var mapView = function() {
 					// add bounce animation to marker when clicked
 					item.marker.setAnimation(google.maps.Animation.BOUNCE);
 					// create new infowindow
-					var contentString = '<strong>' + item.name + '</strong>' + '<br/><hr/> <strong>Address: </strong>' + place.formatted_address + '<br/> <strong>Phone: </strong>' + place.formatted_phone_number + '<br/> <strong>Website: </strong>' + place.website;
+					var contentString = '<strong>' + item.name + '</strong>' + '<br/><hr/> <strong>Address: </strong>' + place.formatted_address + '<br/> <strong>Phone: </strong>' + place.formatted_phone_number + '<br/> <strong>Website: </strong>' + place.website + '<br/> <strong>Checkins: </strong>' + item.numberOfCheckins;
 					item.infowindow = new google.maps.InfoWindow({
 						content: contentString
 					})
