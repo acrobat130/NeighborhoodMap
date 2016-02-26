@@ -130,7 +130,6 @@ var mapView = function() {
 				url: apiEndpoint,
 				dataType: 'json',
 				data: 'll=' + item.geometry.location.lat() + ',' + item.geometry.location.lng() + '&name=' + name + '&intent=' + intent + '&client_id=' + clientId + '&client_secret=' + clientSecret + '&v=' + version + '',
-				// data: 'll=' + initialData[i].lat + ',' + initialData[i].lng + '&name=' + name + '&intent=' + intent + '&client_id=' + clientId + '&client_secret=' + clientSecret + '&v=' + version + '',
 				// async: false,
 				success: fourSquareSuccessHandler,
 				error: function(err) {
@@ -141,7 +140,13 @@ var mapView = function() {
 			function fourSquareSuccessHandler(data) {
 				// do something with foursquare data
 				console.log("successful AJAX request to foursquare");
-				console.log("data:", data)
+				// console.log("data:", data)
+				// if there is a venue found,
+				if (data.response.venues['0']) {
+					// add number of checkins to item
+					item.numberOfCheckins = data.response.venues[0].stats.checkinsCount;
+					console.log("data.response.venues['0'].stats.checkinsCount", data.response.venues['0'].stats.checkinsCount)
+				}
 			}
 
 
