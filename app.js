@@ -64,10 +64,6 @@ var mapView = function() {
 	// add variable to hold array of infowindows so I can close them all before opening a new one
 	this.infowindowArray = [];
 
-	// info for foursquare request
-	var clientId = 'PJH1KVDYTTSVN3EUAV3LXPPR53LIEW0ZYGVKRE5OVTMO5YGT';
-	var clientSecret = 'RJU02QXFZRZCS1W53HG4SNFW4AYVMARPLKPBQ5DHF13XWUXW';
-	var apiEndpoint = 'https://api.foursquare.com/v2/venues/search';
 
 	// add 5 custom hard-coded location markers on initialization
 	for (var i = 0; i < initialData.length; i++) {
@@ -97,18 +93,6 @@ var mapView = function() {
 		}
 
 
-		// ajax request to foursquare
-		$.ajax({
-			url: apiEndpoint,
-			dataType: 'json',
-			data: 'll=' + initialData[i].lat + ',' + initialData[i].lng + '&client_id=' + clientId + '&client_secret=' + clientSecret + '',
-			// async: false,
-			success: fourSquareSuccessHandler
-		});
-
-		function fourSquareSuccessHandler(data) {
-			// do something with foursquare data
-		}
 
 		// create marker
 		function createMarker(item) {
@@ -130,6 +114,35 @@ var mapView = function() {
 					item.website = place.website;
 				}
 			}
+
+			// info for foursquare request
+			var clientId = 'PJH1KVDYTTSVN3EUAV3LXPPR53LIEW0ZYGVKRE5OVTMO5YGT',
+				clientSecret = 'RJU02QXFZRZCS1W53HG4SNFW4AYVMARPLKPBQ5DHF13XWUXW',
+				apiEndpoint = 'https://api.foursquare.com/v2/venues/search',
+				version = '20160225';
+
+			// ajax request to foursquare
+			$.ajax({
+				url: apiEndpoint,
+				dataType: 'json',
+				data: 'll=' + currentItem.lat + ',' + currentItem.lng + '&client_id=' + clientId + '&client_secret=' + clientSecret + '&v=' + version + '',
+				// async: false,
+				success: fourSquareSuccessHandler,
+				error: function(err) {
+					console.log("error in ajax request to foursquare:", err)
+				}
+			});
+
+			function fourSquareSuccessHandler(data) {
+				// do something with foursquare data
+				console.log("successful AJAX request to foursquare");
+			}
+
+
+
+
+
+
 
 			// default marker
 			item.marker = new google.maps.Marker({
