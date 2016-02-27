@@ -66,7 +66,8 @@ var mapView = function() {
 
 
 	// add 5 custom hard-coded location markers on initialization
-	for (var i = 0; i < initialData.length; i++) {
+	var initialDataLength = initialData.length;
+	for (var i = 0; i < initialDataLength; i++) {
 
 		var currentItem = initialData[i];
 		// LatLng object for each location:
