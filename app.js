@@ -97,7 +97,6 @@ var mapView = function() {
 
 		// create marker
 		function createMarker(item) {
-			console.log("item", item)
 			// make details request
 			var request = {
 				placeId: item.place_id
@@ -127,7 +126,6 @@ var mapView = function() {
 				intent = 'match';
 
 			// ajax request to foursquare
-			console.log("initialData", initialData)
 			$.ajax({
 				url: apiEndpoint,
 				dataType: 'json',
@@ -147,7 +145,6 @@ var mapView = function() {
 				if (data.response.venues['0']) {
 					// add number of checkins to item
 					item.numberOfCheckins = data.response.venues[0].stats.checkinsCount;
-					console.log("data.response.venues['0'].stats.checkinsCount", data.response.venues['0'].stats.checkinsCount)
 				}
 			}
 
@@ -175,7 +172,6 @@ var mapView = function() {
 		// add event listener on click for infowindow and animation
 		// console.log(currentItem)
 		function addClickListener(item, place) {
-			// console.log(item)
 			 item.marker.addListener('click', (function(map, item){
 				return function(){
 					// close all open infowindows
@@ -203,7 +199,6 @@ var mapView = function() {
 			self.mapLocations.push(item);
 			allLocations.push(item);
 		}
-		// console.log(currentItem)
 	};
 
 	// filter functionality from searchbar
