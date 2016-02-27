@@ -133,7 +133,7 @@ var mapView = function() {
 				// async: false,
 				success: fourSquareSuccessHandler,
 				error: function(err) {
-					console.log("error in ajax request to foursquare:", err)
+					console.log("error in ajax request to foursquare:", err);
 				}
 			});
 
@@ -184,7 +184,7 @@ var mapView = function() {
 					var contentString = '<strong>' + item.name + '</strong>' + '<br/><hr/> <strong>Address: </strong>' + place.formatted_address + '<br/> <strong>Phone: </strong>' + place.formatted_phone_number + '<br/> <strong>Website: </strong>' + place.website + '<br/> <strong>Checkins: </strong>' + item.numberOfCheckins;
 					item.infowindow = new google.maps.InfoWindow({
 						content: contentString
-					})
+					});
 					// push infowindow to infowindowArray
 					self.infowindowArray.push(item.infowindow);
 					// infoWindow.setContent(item.title);
@@ -199,7 +199,7 @@ var mapView = function() {
 			self.mapLocations.push(item);
 			allLocations.push(item);
 		}
-	};
+	}
 
 	// filter functionality from searchbar
 	var self = this;
@@ -232,7 +232,7 @@ var mapView = function() {
 
 		currentLoc.infowindow = new google.maps.InfoWindow({
 			content: contentString
-		})
+		});
 		// push infowindow to infowindowArray
 		self.infowindowArray.push(currentLoc.infowindow);
 		// infoWindow.setContent(currentItem.title);
@@ -240,7 +240,7 @@ var mapView = function() {
 		setTimeout(function(){
 			currentLoc.marker.setAnimation(null);
 		}, 1400);
-	}
+	};
 	// add query as ko observable
 	// this.query = ko.observable('');
 	// console.log("1",this.query())
@@ -270,7 +270,7 @@ var mapView = function() {
 
 var googleError = function() {
 	console.log("error loading google api");
-}
+};
 
 
 
