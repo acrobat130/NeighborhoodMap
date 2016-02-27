@@ -133,7 +133,7 @@ var mapView = function() {
 				// async: false,
 				success: fourSquareSuccessHandler,
 				error: function(err) {
-					console.log("error in ajax request to foursquare:", err);
+					alert("error in ajax request to foursquare:", err);
 				}
 			});
 
@@ -268,8 +268,8 @@ var mapView = function() {
 	// }
 };
 
-var googleError = function() {
-	console.log("error loading google api");
+var googleError = function(err) {
+	alert("error loading google api", err);
 };
 
 
